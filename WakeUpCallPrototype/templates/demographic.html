@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demographic Information</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Clear all input fields when page loads
+      const form = document.querySelector('form');
+      form.reset();
+
+      // Prevent browser autofill
+      document.querySelectorAll('input').forEach(input => {
+        input.autocomplete = 'off';
+      });
+    });
+  </script>
+  <nav class="navbar">
+    <ul>
+      <li><a href="{{ url_for('home') }}" class="nav-link">Home</a></li>
+      <li><a href="{{ url_for('aboutOSA') }}" class="nav-link">About Sleep Apnea</a></li>
+      <li><a href="{{ url_for('aboutus') }}" class="nav-link">Meet the Team</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="form-grid-container">
+    <!-- Left Side Banner -->
+    <div class="left-banner">
+      <h1>Demographics</h1>
+      <i class="fa-solid fa-circle-user"></i>
+    </div>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <!-- Right Side Form -->
+    <div class="form-wrapper">
+      <h2>Demographic Information</h2>
+      <p>Help us understand your background for better risk evaluation.</p>
+
+      <form action="{{ url_for('demographic') }}" method="post">
+        <!-- Sex at Birth -->
+        <label>Sex at Birth</label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="Male" required> Male</label>
+          <label><input type="radio" name="gender" value="Female" required> Female</label>
+        </div>
+
+        <!-- Age -->
+        <label for="age">How old are you?</label>
+        <input type="number" id="age" name="age" required min="18" max="120" />
+
+        <!-- Occupation -->
+        <label for="occupation">What is your primary occupation?</label>
+        <select id="occupation" name="occupation" required>
+          <option value="Accountant">Accountant</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Engineer">Engineer</option>
+          <option value="Lawyer">Lawyer</option>
+          <option value="Manager">Manager</option>
+          <option value="Nurse">Nurse</option>
+          <option value="Sales Representative">Sales Representative</option>
+          <option value="Salesperson">Salesperson</option>
+          <option value="Scientist">Scientist</option>
+          <option value="Software Engineer">Software Engineer</option>
+          <option value="Teacher">Teacher</option>
+        </select>
+
+        <!-- Submit Button -->
+        <div class="form-footer">
+          <button type="submit" class="cta-button"><span>Proceed</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-left">
+      <span>©2025 WakeUp Call</span>
+    </div>
+    <div class="footer-right">
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+      <span>|</span>
+      <a href="{{ url_for('contactus') }}">Contact Us</a>
+      <span>|</span>
+      <a href="{{ url_for('faq') }}">FAQ</a>
+    </div>
+  </footer>
+
+</body>
+
+</html>

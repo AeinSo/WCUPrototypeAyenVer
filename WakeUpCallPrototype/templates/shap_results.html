@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Sleep Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .results-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .prediction-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .prediction-card {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .high-risk {
+            background-color: #ffcccc;
+            border-left: 5px solid #ff3333;
+        }
+        .low-risk {
+            background-color: #ccffcc;
+            border-left: 5px solid #33cc33;
+        }
+        .probability-breakdown {
+            margin-top: 20px;
+        }
+        .probability-breakdown ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .probability-breakdown li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .shap-section {
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .shap-plot {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .feature-impacts {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .positive-impact {
+            color: #2e7d32;
+        }
+        .negative-impact {
+            color: #c62828;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .impact-value {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="results-container">
+        <h1>Your Sleep Disorder Risk Analysis</h1>
+        <h2>Predicted Sleep Disorder: {{ predicted_label }}</h2>
+<ul>
+  {% for label, prob in class_probabilities.items() %}
+    <li>{{ label }}: {{ "%.2f" | format(prob) }}%</li>
+  {% endfor %}
+</ul>
+
+<h3>Explanation (Top Features):</h3>
+<img src="data:image/png;base64,{{ shap_image }}" alt="SHAP Explanation" />
+
+        
+        <!-- Prediction Result -->
+        <div class="prediction-section">
+            <h2>Prediction Result</h2>
+            <div class="prediction-card {{ 'high-risk' if prediction == 'Sleep Apnea' else 'low-risk' }}">
+                <h3>{{ prediction }}</h3>
+                <p>Confidence: {{ prediction_proba[prediction]|round(1) }}%</p>
+            </div>
+            
+            <div class="probability-breakdown">
+                <h3>Probability Breakdown:</h3>
+                <ul>
+                    <li>Insomnia: {{ prediction_proba['Insomnia']|round(1) }}%</li>
+                    <li>Sleep Apnea: {{ prediction_proba['Sleep Apnea']|round(1) }}%</li>
+                    <li>No Sleep Disorder: {{ prediction_proba['No Sleep Disorder']|round(1) }}%</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- SHAP Explanation Panel -->
+        <div class="shap-section">
+            <h2>Detailed Explanation</h2>
+            <img src="data:image/png;base64,{{ shap_panel_plot }}" alt="SHAP Explanation Panel" class="shap-plot">
+        </div>
+        
+        <!-- Force Plot -->
+        <div class="shap-section">
+            <h2>Personalized Impact Visualization</h2>
+            <img src="data:image/png;base64,{{ shap_force_plot }}" alt="SHAP Force Plot" class="shap-plot">
+        </div>
+        
+        <!-- Top Features Table -->
+        <div class="feature-impacts">
+            <h2>Key Factors Influencing Your Prediction</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Your Value</th>
+                        <th>Impact on Prediction</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set top_features = [] %}
+                    {% for i in range(feature_names|length) %}
+                        {% set impact = shap_values[i] %}
+                        {% if top_features|length < 5 or impact|abs > top_features[-1].impact|abs %}
+                            {% set _ = top_features.append({
+                                'name': feature_names[i],
+                                'value': feature_values[i],
+                                'impact': impact
+                            }) %}
+                            {% set _ = top_features.sort(reverse=true, key=lambda x: x.impact|abs) %}
+                            {% if top_features|length > 5 %}
+                                {% set _ = top_features.pop() %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% for feature in top_features %}
+                    <tr>
+                        <td>{{ feature.name }}</td>
+                        <td>
+                            {% if feature.name == 'BMI Category' %}
+                                {% set bmi_mapping = {0: 'Normal', 1: 'Normal Weight', 2: 'Obese', 3: 'Overweight'} %}
+                                {{ bmi_mapping.get(feature.value|int, 'Unknown') }}
+                            {% elif feature.name == 'Gender' %}
+                                {{ 'Male' if feature.value == 1 else 'Female' }}
+                            {% elif feature.name in ['BP_Systolic', 'BP_Diastolic'] %}
+                                {{ feature.value|round(0)|int }}
+                            {% else %}
+                                {{ feature.value|round(2) }}
+                            {% endif %}
+                        </td>
+                        <td class="{{ 'positive-impact' if feature.impact > 0 else 'negative-impact' }}">
+                            <span class="impact-value">{{ feature.impact|round(4) }}</span>
+                            {% if feature.impact > 0 %}
+                                (Increased risk)
+                            {% else %}
+                                (Decreased risk)
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if feature.name == 'Sleep Duration' %}
+                                Hours of sleep per night
+                            {% elif feature.name == 'Quality of Sleep' %}
+                                Self-reported sleep quality (1-10)
+                            {% elif feature.name == 'Stress Level' %}
+                                Self-reported stress level (1-10)
+                            {% elif feature.name == 'Physical Activity Level' %}
+                                Minutes of physical activity per day
+                            {% elif feature.name == 'Daily Steps' %}
+                                Steps taken per day
+                            {% elif feature.name == 'Heart Rate' %}
+                                Resting heart rate (bpm)
+                            {% elif feature.name in ['BP_Systolic', 'BP_Diastolic'] %}
+                                Blood pressure measurement (mmHg)
+                            {% else %}
+                                {{ feature.name }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="navigation">
+            <a href="{{ url_for('home') }}" class="btn">Back to Home</a>
+            <a href="{{ url_for('aboutOSA') }}" class="btn">Learn About Sleep Apnea</a>
+        </div>
+    </div>
+</body>
+</html>

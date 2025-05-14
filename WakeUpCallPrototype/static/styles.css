@@ -1,0 +1,794 @@
+/* ─────────────────────────────── */
+/* GLOBAL / SHARED STYLES (ALL PAGES) */
+/* ─────────────────────────────── */
+
+@font-face {
+  font-family: 'YourCustomFont';
+  src: url('fonts/your-font.woff2') format('woff2'),
+       url('fonts/your-font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Playfair Display';
+  background-color: #f4f4f4;
+  min-height: 200vh;
+}
+
+.fullscreen-hero {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #14222D;
+  text-align: center;
+  color: white;
+}
+
+.word {
+  display: inline-block;
+  font-family: 'Playfair Display';
+  font-weight: 700;
+  font-size: 10vw;
+  opacity: 0;
+  transform: rotateX(120deg);
+  transform-origin: 50% 100%;
+  animation: show 0.01s forwards, pop-word 1.5s forwards;
+  animation-delay: 0s, 0.2s;
+  animation-timing-function: ease-out, cubic-bezier(0.14, 1.23, 0.33, 1.16);
+}
+
+.word.superscript {
+  animation-delay: 0s, 0.4s; /* Delay the 2nd word */
+  font-size: 10vw;
+  vertical-align: super;
+  margin-left: 8px;
+}
+
+/* Animation Keyframes */
+@keyframes show {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-word {
+  0% {
+    transform: rotateX(120deg) scale(0.8);
+  }
+  100% {
+    transform: rotateX(0deg) scale(1);
+  }
+}
+
+
+
+
+
+
+/* ─────────────────────────────── */
+/* NAVBAR - CENTERED */
+/* ─────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #14222D;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  display: inline-block;
+}
+
+.navbar ul li a {
+  color: #fff;
+  font-size: 25px;
+  display: block;
+  text-decoration: none;
+  padding: 25px 50px;
+  font-family: 'Playfair Display';
+  transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: #6D859F;
+  color:#fff
+}
+
+
+.navbar.scrolled {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* ─────────────────────────────── */
+/* HERO SECTION */
+/* ─────────────────────────────── */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 4rem;
+  gap: 2rem;
+}
+
+.hero-text {
+  color: #333;
+  margin-left: 5rem;
+  flex: 1;
+}
+
+.hero-text h2 {
+  font-size: 3rem;
+}
+
+.hero-text p {
+  font-size: 2rem;
+}
+
+.hero-image img {
+  width: 600px;
+  border-radius: 16px;
+}
+
+.cta-button {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #14222D;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+  font-family: 'Playfair Display';
+}
+
+.cta-button::after {
+  content: "";
+  width: 0%;
+  height: 100%;
+  background: #6D859F;
+  position: absolute;
+  transition: all 0.4s ease-in-out;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.cta-button:hover::after {
+  right: auto;
+  left: 0;
+  width: 100%;
+}
+
+.cta-button span {
+  text-align: center;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  z-index: 2;
+  transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover span {
+  color: #333;
+  animation: scaleUp 0.3s ease-in-out;
+}
+
+.cta-button span {
+  font-size: 1.5rem;
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* ─────────────────────────────── */
+/* INFO SECTION */
+/* ─────────────────────────────── */
+.info-section {
+  background-image: url('tired-person.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 4rem 5rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  min-height: 400px;
+}
+
+.info-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  color: #000;
+}
+
+.info-card h3 {
+  font-size: 1.5rem;
+}
+
+/* ─────────────────────────────── */
+/* FORM & CONSENT SECTIONS */
+/* ─────────────────────────────── */
+.form-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  max-width: 900px;
+  margin: 3rem auto;
+  border-radius: 20px;
+  background-color: #d0d0d06d;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.left-banner {
+  background-color: #6D859F;
+  color: #fff;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.left-banner h1 {
+  font-family: 'Playfair Display';
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.left-banner img {
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+  filter: sepia(20%);
+}
+
+.form-wrapper {
+  padding: 2rem;
+}
+
+.form-wrapper h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #444;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+form button {
+  margin-top: 2rem;
+  padding: 0.7rem 1.5rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #6D859F;
+}
+
+.radio-group {
+  display: flex;
+  gap: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.radio-group label {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+/* Sleep Quality Slider Styles */
+
+
+.scale-description {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: #666;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.scale-value {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Stress Level Slider Styles */
+.scale-description {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: #666;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.scale-value {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Input field styling */
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Health Form Specific Styles */
+.bmi-display {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.bmi-display > div {
+    flex: 1;
+}
+
+input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.bmi-display {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.bmi-display > div {
+    flex: 1;
+}
+
+input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+/* Blood pressure validation */
+input:invalid {
+    border-color: #ff6b6b;
+}
+
+/* ─────────────────────────────── */
+/* RESULT PAGE */
+/* ─────────────────────────────── */
+/* Results Page Styles */
+.result-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.risk-label {
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.risk-label.high {
+    background-color: #e74c3c;
+}
+
+.risk-label.moderate {
+    background-color: #f39c12;
+}
+
+.risk-label.low {
+    background-color: #2ecc71;
+}
+
+.shap-plot {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.shap-plot img {
+    max-width: 100%;
+    height: auto;
+}
+
+.probabilities, .key-factors {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.probabilities ul, .key-factors ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.probabilities li, .key-factors li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.key-factors li strong {
+    color: #2c3e50;
+}
+
+.form-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+.error-message {
+    color: #e74c3c;
+    background: #fde8e8;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+}
+
+/* ─────────────────────────────── */
+/* FOOTER */
+/* ─────────────────────────────── */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background-color: #14222D;
+  color: #fff;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer a {
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.footer a:hover {
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────── */
+/* TEAM SECTION */
+/* ─────────────────────────────── */
+.team-section {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #14222D;
+}
+
+.team-section .section-title {
+  font-size: 4rem;
+  font-weight: bold;
+  color:#fff
+}
+
+.team-section .section-subtitle {
+  font-size: 2rem;
+  margin-top: 1rem;
+  color: #e0d7d7;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0 30px;
+}
+
+.profile-card {
+  max-width: 250px;
+  background: #f4eeee;
+  padding: 40px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0 0 2px #ddd9d9;
+  transition: 0.3s;
+}
+
+.profile-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px -5px #ccc;
+}
+
+.profile-icon {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover .profile-icon {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.profile-name {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 25px 0 10px;
+}
+
+.profile-position {
+  font-size: 20px;
+  color: #777;
+}
+
+/* SHAP Results Page Styles */
+.shap-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.shap-plot {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.shap-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.shap-table th, .shap-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.shap-table th {
+    background-color: #e9ecef;
+}
+
+.results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.prediction-card {
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.high-risk {
+    background-color: #ffebee;
+    border-left: 5px solid #f44336;
+}
+
+.low-risk {
+    background-color: #e8f5e9;
+    border-left: 5px solid #4caf50;
+}
+
+.shap-plot {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    display: block;
+    border: 1px solid #ddd;
+}
+
+.feature-impacts table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.feature-impacts th, .feature-impacts td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.positive-impact {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.negative-impact {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.impact-true {
+    color: #28a745; /* Green for positive impact */
+    font-weight: bold;
+}
+
+.impact-false {
+    color: #dc3545; /* Red for negative impact */
+    font-weight: bold;
+}
+
+#shap-force-plot {
+    width: 100%;
+    height: 300px;
+    margin: 1rem 0;
+}
+
+/* ─────────────────────────────── */
+/* RESPONSIVE DESIGN */
+/* ─────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero-section {
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .hero-text {
+    margin-left: 0;
+  }
+
+  .hero-image img {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .info-section {
+    padding: 2rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .info-card {
+    max-width: 100%;
+  }
+
+  .form-grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .left-banner,
+  .form-wrapper,
+  .result-container {
+    padding: 1.5rem;
+  }
+
+  .result-container {
+    margin: 3rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .footer-left,
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-text h2 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+  }
+
+  .info-section {
+    padding: 2rem 1rem;
+  }
+}
+
+/* ─────────────────────────────── */
+/*  ICONS                          */
+/* ─────────────────────────────── */
+
+.fa-circle-user,
+.fa-bed,
+.fa-person-running,
+.fa-notes-medical,
+.fa-circle-exclamation {
+  font-size: 100px;
+  margin: 0 auto;
+  color: #ffffff;
+}
